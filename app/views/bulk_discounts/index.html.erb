@@ -2,7 +2,7 @@
 <h1> Bulk Discounts </h1>
 
 <ul>
-
+<%# <% binding.pry %> %>
   <% @bulk_discounts.each do |bulk_discount| %> 
  
   <section id ="bulk_show_link-<%= bulk_discount.id %>">
@@ -10,7 +10,7 @@
     <li>Percentage Discount:<%= bulk_discount.percentage_discount %></li>
     <li>Quantity Threshold:<%= bulk_discount.quantity_threshold %></li>
     <p>
-      <%= form_with url: "/merchants/#{@merchant.id}/bulk_discounts", method: :delete, data: {turbo: false} do |f| %>
+      <%= form_with url: "/merchants/#{@merchant.id}/bulk_discounts/#{bulk_discount.id}", method: :delete, data: {turbo: false} do |f| %>
       <%= f.submit "Delete Discount #{bulk_discount.id}" %>
       <%end %>
     </p>
