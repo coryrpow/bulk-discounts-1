@@ -40,9 +40,9 @@ RSpec.describe "merchant dashboard" do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
-    @bulk_discount_1 = BulkDiscount.create!(percentage_discount: 10, quantity_threshold: 20.0, merchant_id: @merchant1.id)
-    @bulk_discount_2 = BulkDiscount.create!(percentage_discount: 15, quantity_threshold: 30.0, merchant_id: @merchant1.id)
-    @bulk_discount_3 = BulkDiscount.create!(percentage_discount: 20, quantity_threshold: 40.0, merchant_id: @merchant1.id)
+    @bulk_discount_1 = BulkDiscount.create!(percentage_discount: 10, quantity_threshold: 20, merchant_id: @merchant1.id)
+    @bulk_discount_2 = BulkDiscount.create!(percentage_discount: 15, quantity_threshold: 30, merchant_id: @merchant1.id)
+    @bulk_discount_3 = BulkDiscount.create!(percentage_discount: 20, quantity_threshold: 40, merchant_id: @merchant1.id)
 
     visit "/merchants/#{@merchant1.id}/bulk_discounts"
   end
@@ -92,7 +92,7 @@ RSpec.describe "merchant dashboard" do
     visit "/merchants/#{@merchant1.id}/bulk_discounts/new"
 
     fill_in(:add_percentage_discount, with: 35)
-    fill_in(:add_quantity_threshold, with: 50.0)
+    fill_in(:add_quantity_threshold, with: 50)
     
 
     click_button("Submit")
@@ -100,9 +100,8 @@ RSpec.describe "merchant dashboard" do
     @merchant1.reload
 
     expect(current_path).to eq("/merchants/#{@merchant1.id}/bulk_discounts")
-    # expect(page).to have_content(35)
-    # expect(page).to have_content(50.0)
-
+    expect(page).to have_content("35")
+    expect(page).to have_content("50")
   end
 end
 
