@@ -1,0 +1,14 @@
+<h1>New Bulk Discount</h1>
+
+<section id="new_discount">
+    <%= form_with url: "/merchants/#{@merchant.id}/bulk_discounts", method: :post, data: {turbo: false} do |f| %>
+     <fieldset>
+      <%= f.label :add_percentage_discount, "Add Percentage Discount" %>
+      <%= f.text_area :add_percentage_discount %>
+      <br>
+      <%= f.label :add_quantity_threshold, "Add Quantity Threshold" %>
+      <%= f.text_area :add_quantity_threshold %>
+      <%= f.submit "Submit" %>
+    </fieldset>
+    <% end %>
+</section>

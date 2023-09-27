@@ -40,9 +40,9 @@ RSpec.describe "merchant dashboard" do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
-    @bulk_discount_1 = BulkDiscount.create!(percentage_discount: 10, quantity_threshold: 20.0, merchant_id: @merchant1.id)
-    @bulk_discount_2 = BulkDiscount.create!(percentage_discount: 15, quantity_threshold: 30.0, merchant_id: @merchant1.id)
-    @bulk_discount_3 = BulkDiscount.create!(percentage_discount: 20, quantity_threshold: 40.0, merchant_id: @merchant1.id)
+    @bulk_discount_1 = BulkDiscount.create!(percentage_discount: 10, quantity_threshold: 20, merchant_id: @merchant1.id)
+    @bulk_discount_2 = BulkDiscount.create!(percentage_discount: 15, quantity_threshold: 30, merchant_id: @merchant1.id)
+    @bulk_discount_3 = BulkDiscount.create!(percentage_discount: 20, quantity_threshold: 40, merchant_id: @merchant1.id)
 
     visit "/merchants/#{@merchant1.id}/bulk_discounts"
   end
@@ -64,4 +64,44 @@ RSpec.describe "merchant dashboard" do
 
     expect(current_path).to eq("/merchants/#{@merchant1.id}/bulk_discounts/#{@bulk_discount_1.id}")
   end
+
+  
+  it "has a link to create a new discount I click this link which takes me to a new page where I see a form add new bulk discount
+    When I fill in the form with valid data Then I am redirected back to the bulk discount index
+    And I see my new bulk discount listed" do
+
+    expect(page).to have_link("Create New Discount")
+
+    click_link("Create New Discount")
+
+    expect(current_path).to eq("/merchants/#{@merchant1.id}/bulk_discounts/new")    
+  end
+
+  it "Takes you to a new page where there's a form to add a new bulk discount" do
+
+    visit "/merchants/#{@merchant1.id}/bulk_discounts/new"
+
+
+    expect(find("form")).to have_content("Add Percentage Discount")
+    
+  end
+
+  it "When I fill in the form with valid data
+  Then I am redirected back to the bulk discount index
+  And I see my new bulk discount listed" do 
+    visit "/merchants/#{@merchant1.id}/bulk_discounts/new"
+
+    fill_in(:add_percentage_discount, with: 35)
+    fill_in(:add_quantity_threshold, with: 50)
+    
+
+    click_button("Submit")
+    
+    @merchant1.reload
+
+    expect(current_path).to eq("/merchants/#{@merchant1.id}/bulk_discounts")
+    expect(page).to have_content("35")
+    expect(page).to have_content("50")
+  end
 end
+
