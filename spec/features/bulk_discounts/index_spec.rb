@@ -106,20 +106,22 @@ RSpec.describe "merchant dashboard" do
 
   it "shows a button next to each bulk discount to delete it" do
     within("#bulk_show_link-#{@bulk_discount_1.id}") do
-      expect(find("form")).to have_content("Delete Discount #{@bulk_discount_1.id}")
+      expect(page).to have_button("Delete Discount #{@bulk_discount_1.id}")
     end
 
   end
 
   it "when I click on this button I am redirected back to the bulk discounts index page
   And I no longer see the discount listed" do
-  
-    click_button("Delete Discount #{@bulk_discount_1.id}")
+    
+    within("#bulk_show_link-#{@bulk_discount_1.id}") do
+      click_button("Delete Discount #{@bulk_discount_1.id}")
+    end
 
     expect(current_path).to eq("/merchants/#{@merchant1.id}/bulk_discounts")
 
-    expect(page).to_not have_content(@bulk_discount_1.percentage_discount)
-    expect(page).to_not have_content(@bulk_discount_1.quantity_threshold)
+    expect(page).to_not have_content("Percentage Discount:#{@bulk_discount_1.percentage_discount}")
+    expect(page).to_not have_content("Quantity Threshold:#{@bulk_discount_1.quantity_threshold}")
   end
 end
 
