@@ -6,9 +6,14 @@
   <% @bulk_discounts.each do |bulk_discount| %> 
  
   <section id ="bulk_show_link-<%= bulk_discount.id %>">
-    <li><%= "Bulk Discounts: " %><%= link_to " #{bulk_discount.id}", "/merchants/#{bulk_discount.merchant_id}/bulk_discounts/#{bulk_discount.id}" %></li>  
-    <li><%= bulk_discount.percentage_discount %></li>
-    <li><%= bulk_discount.quantity_threshold %></li>
+    <p><%= "Bulk Discount: " %><%= link_to " #{bulk_discount.id}", "/merchants/#{bulk_discount.merchant_id}/bulk_discounts/#{bulk_discount.id}" %></p>  
+    <li>Percentage Discount:<%= bulk_discount.percentage_discount %></li>
+    <li>Quantity Threshold:<%= bulk_discount.quantity_threshold %></li>
+    <p>
+      <%= form_with url: "/merchants/#{@merchant.id}/bulk_discounts", method: :delete, data: {turbo: false} do |f| %>
+      <%= f.submit "Delete Discount #{bulk_discount.id}" %>
+      <%end %>
+    </p>
   <% end %>
   </section>
 </ul>
@@ -16,5 +21,3 @@
 <ul>
   <%= link_to "Create New Discount", new_merchant_bulk_discount_path(@merchant) %>  
 </ul>
-
-<%# "/merchants/#{@merchant.id}/bulk_discounts/new" %>
